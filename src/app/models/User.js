@@ -1,6 +1,7 @@
 import Sequelize, { Model } from 'sequelize'
 import Bcryptjs from 'bcryptjs'
 
+
 class User extends Model{
 
 //o parametro sequelize é uma variavel connection(Sequelize) vinda 
@@ -45,7 +46,9 @@ class User extends Model{
 
 
   } // fim static.init()
-
+  static associate(models){
+    this.belongsTo(models.File, {foreignKey: 'avatar_id', as: 'avatar' })
+  }
     checkPassword(password){
     return Bcryptjs.compare(password, this.password_hash)
   }

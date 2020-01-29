@@ -18,7 +18,7 @@ class SessionController {
     console.log("chegou até aqui, logo user exist e password success")
 
     const { id, name } = user 
-
+      console.log(id, name)
     return res.json({
       user: {
         id,
