@@ -18,6 +18,7 @@ routes.post('/users', UserController.store)
 
 routes.use(authMiddleware) 
 //apointments
+routes.get('/appointments', AppointmentController.index)
 routes.post('/appointments', AppointmentController.store)
 // users
 routes.put('/users', UserController.update)
