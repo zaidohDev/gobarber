@@ -22,7 +22,6 @@ class Database {
     //  this.connection é uma vaiavel estabelece uma conexao com o database 
     this.connection = new Sequelize(databseConfig);
 
-    console.log(this.connection)
     //  cria um map da variavel models(User) e passa para User.init(sequelize)
     models
       .map(model => model.init(this.connection))
@@ -31,9 +30,10 @@ class Database {
   }
 
   mongo() {
-
+    this.mongoConnection = mongoose.connect(
+      'mongodb://localhost:27017/gobarber', 
+    { useNewUrlParser: true, useFindAndModify: true, useUnifiedTopology: true}) 
   }
 }
-
 
 export default new Database()

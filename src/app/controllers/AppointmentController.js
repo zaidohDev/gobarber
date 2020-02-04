@@ -1,8 +1,10 @@
-import { startOfHour, parseISO, isBefore } from 'date-fns';
+import { startOfHour, parseISO, isBefore, format} from 'date-fns';
 import Appointment from './../models/Appointment';
 import File from './../models/File';
 import User from './../models/User';
 import * as Yup from 'yup'; 
+import Notification from '../schemas/Notification';
+
 
 class AppointmentController {
   async index(req, res){
@@ -47,8 +49,6 @@ class AppointmentController {
       where: { id: provider_id, provider: true }
     });
 
-    console.log('checando '+ checkIsProvider)
-
     if (!checkIsProvider) {
       return res
       .status(401)
@@ -69,8 +69,6 @@ class AppointmentController {
       where: { provider_id, canceled_at: null, date: hourStart },
     });  
 
-    console.log('check: -->', checkAvailability)
-
     if (checkAvailability) {
       return res.status(400).json({erro:'Appointment date is not availability'});
     } 
@@ -80,6 +78,20 @@ class AppointmentController {
       provider_id,
       date: hourStart
     });
+
+    /*
+      notify appointment provider
+    */
+    const user = await User.findByPk(req.userId)
+
+    const formatedDate = format(
+      hourStart, "'Dia' dd 'de' MMMM, 'às' H:mm'h'"
+    )
+    
+    await Notification.create({
+      content: `Novo agendamento de ${user.name} para ${formatedDate} `,
+      user: provider_id
+    })
     return res.json(appointment);
   }
 }
