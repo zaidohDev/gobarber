@@ -1,4 +1,2 @@
-# This is heading 1
-## This is heading 2
-### This is heading 3
-#### This is heading 4
+## solution for scheduling services
+# This project is part of a course using nodejs, react and react native.
